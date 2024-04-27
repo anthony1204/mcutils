@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page with Buttons</title>
+    <style>
+        /* CSS styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+        .button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .container {
+            width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+        .text-entry {
+            width: 100%;
+            height: 200px;
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: vertical;
+        }
+        .generate-btn {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .back-btn {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <a href="#" class="button" id="generator-button">1 Command Generator</a>
+
+    <div class="container" id="command-generator">
+        <textarea id="commands" class="text-entry" placeholder="Enter your commands here"></textarea>
+        <button id="generateBtn" class="generate-btn">Generate</button>
+        <button id="backBtn1" class="button back-btn">Back</button>
+    </div>
+
+    <a href="#" class="button" id="tellraw-button">Tellraw Link Generator</a>
+
+    <div class="container" id="tellraw-generator">
+        <input type="text" id="prefix-input" placeholder="Enter prefix text"><br>
+        <input type="text" id="text-input" placeholder="Enter Text"><br>
+        <input type="text" id="link-input" placeholder="Enter Link"><br>
+        <button id="generateTellrawBtn" class="generate-btn">Generate</button>
+        <button id="backBtn2" class="button back-btn">Back</button>
+    </div>
+
+    <script>
+        document.getElementById('generator-button').addEventListener('click', function() {
+            document.getElementById('generator-button').style.display = 'none';
+            document.getElementById('command-generator').style.display = 'block';
+            document.getElementById('tellraw-button').style.display = 'none';
+            document.getElementById('tellraw-generator').style.display = 'none';
+        });
+
+        document.getElementById('tellraw-button').addEventListener('click', function() {
+            document.getElementById('generator-button').style.display = 'none';
+            document.getElementById('command-generator').style.display = 'none';
+            document.getElementById('tellraw-button').style.display = 'none';
+            document.getElementById('tellraw-generator').style.display = 'block';
+        });
+
+        document.getElementById('backBtn1').addEventListener('click', function() {
+            document.getElementById('generator-button').style.display = 'block';
+            document.getElementById('command-generator').style.display = 'none';
+            document.getElementById('tellraw-button').style.display = 'block';
+            document.getElementById('tellraw-generator').style.display = 'none';
+        });
+
+        document.getElementById('backBtn2').addEventListener('click', function() {
+            document.getElementById('generator-button').style.display = 'block';
+            document.getElementById('command-generator').style.display = 'none';
+            document.getElementById('tellraw-button').style.display = 'block';
+            document.getElementById('tellraw-generator').style.display = 'none';
+        });
+
+        document.getElementById('generateBtn').addEventListener('click', function() {
+            var commands = document.getElementById('commands').value.trim();
+            if (commands !== '') {
+                var out = 'summon falling_block ~ ~.5 ~ {Time:1,BlockState:{Name:redstone_block},Passengers:[{id:armor_stand,Health:0,Passengers:[{id:falling_block,Time:1,BlockState:{Name:activator_rail},Passengers:[';
+                out += "{id:command_block_minecart,Command:'gamerule commandBlockOutput false'},";
+                var cmds = commands.split('\n');
+                cmds.forEach(function(cmd) {
+                    out += "{id:command_block_minecart,Command:'" + cmd.trim() + "'},";
+                });
+                out += "{id:command_block_minecart,Command:'setblock ~ ~1 ~ command_block{auto:1,Command:\"fill ~ ~ ~ ~ ~-3 ~ air\"}'},";
+                out += "{id:command_block_minecart,Command:'kill @e[type=command_block_minecart,distance=..2]'}]}]}]}";
+                
+                navigator.clipboard.writeText(out).then(function() {
+                    alert("Generated command copied to clipboard.");
+                }).catch(function(error) {
+                    console.error('Failed to copy: ', error);
+                });
+            } else {
+                alert("Please enter some commands.");
+            }
+        });
+
+        document.getElementById('generateTellrawBtn').addEventListener('click', function() {
+            var prefix = document.getElementById('prefix-input').value.trim();
+            var text = document.getElementById('text-input').value.trim();
+            var link = document.getElementById('link-input').value.trim();
+            
+            // Add "https://" to the link if it doesn't already start with it
+            if (!link.startsWith("https://")) {
+                link = "https://" + link;
+            }
+            
+            // Construct the tellraw command
+            var tellrawLink = `/tellraw @p [{"text":"${prefix}","extra":[{"text":"${text}","clickEvent":{"action":"open_url","value":"${link}"}}]}]`;
+            
+            // Copy the link to clipboard (only works in modern browsers)
+            navigator.clipboard.writeText(tellrawLink).then(function() {
+                console.log("Link copied to clipboard:", tellrawLink);
+                alert("Link copied to clipboard:\n" + tellrawLink);
+            }, function(err) {
+                console.error("Failed to copy link to clipboard:", err);
+                alert("Failed to copy link to clipboard.");
+            });
+        });
+    </script>
+</body>
+</html>
