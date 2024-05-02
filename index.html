@@ -3,15 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minecraft Dev Utilities</title>
-    <meta name="description" content="By Anthony4933">
-    <meta property="og:title" content="Minecraft Map Making/Dev Utils">
-    <meta property="og:description" content="By Anthony4933">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="mcutil.anthony4933.xyz">
-    <meta property="og:image" content="https://cdn.discordapp.com/attachments/1231059354774409287/1231061959584124938/image.png?ex=662dadcb&is=662c5c4b&hm=348b226619ec13acbf213d61c4acbfc60601eadf46fe89049f576fc303aa9603&">
-    <meta property="og:color" content="#75c1d9">
-    <link rel="icon" type="image/png" href="https://cdn.discordapp.com/attachments/1231059354774409287/1231061959584124938/image.png?ex=662dadcb&is=662c5c4b&hm=348b226619ec13acbf213d61c4acbfc60601eadf46fe89049f576fc303aa9603&">
+    <title>Page with Buttons</title>
     <style>
         /* CSS styles */
         body {
@@ -148,8 +140,8 @@
                 link = "https://" + link;
             }
             
-            // Construct the tellraw command
-            var tellrawLink = `/tellraw @p [{"text":"${prefix}","extra":[{"text":"${text}","clickEvent":{"action":"open_url","value":"${link}"}}]}]`;
+            // Construct the tellraw command with @a target selector
+            var tellrawLink = `/tellraw @a [{"text":"${prefix}","extra":[{"text":"${text}","clickEvent":{"action":"open_url","value":"${link}"}}]}]`;
             
             // Copy the link to clipboard (only works in modern browsers)
             navigator.clipboard.writeText(tellrawLink).then(function() {
@@ -161,14 +153,5 @@
             });
         });
     </script>
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NN4Z0TFTDZ"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-NN4Z0TFTDZ');
-</script>
 </body>
 </html>
